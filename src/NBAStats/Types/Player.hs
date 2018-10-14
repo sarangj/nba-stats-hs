@@ -11,7 +11,7 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Vector ((!))
 
-data Player = Player 
+data Player = Player
   { player_name :: Text
   , player_number :: Int
   , player_position :: Position
@@ -47,13 +47,13 @@ data Height = Height
 
 instance FromJSON Height where
   parseJSON = withText "Height" $ \t -> return $ case Text.splitOn "-" t of
-    (x1:x2:[]) -> Height 
+    (x1:x2:[]) -> Height
       { feet = read (Text.unpack x1)
-      , inches = read (Text.unpack x2) 
+      , inches = read (Text.unpack x2)
       }
     _ -> error "Invalid height"
 
-data Experience 
+data Experience
   = Rookie
   | Vet Int
   deriving (Show)
@@ -63,7 +63,7 @@ instance FromJSON Experience where
     "R" -> Rookie
     _ -> Vet $ read (Text.unpack t)
 
-data Position 
+data Position
   = Guard
   | Forward
   | Center
@@ -78,11 +78,11 @@ instance Show Position where
 
 instance FromJSON Position where
   parseJSON = withText "Position" $ return . fromMaybe Unknown . posFromText
-    where 
+    where
       posFromText :: Text -> Maybe Position
       posFromText "G" = Just Guard
       posFromText "F" = Just Forward
       posFromText "C" = Just Center
-      posFromText pt = case Text.splitOn "-" pt of 
+      posFromText pt = case Text.splitOn "-" pt of
         (x1:x2:[]) -> Multi <$> (posFromText x1) <*> (posFromText x2)
         _ -> Nothing

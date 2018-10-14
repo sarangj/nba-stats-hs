@@ -10,14 +10,14 @@ import NBAStats.Types.Coach
 import NBAStats.Types.Common
 import NBAStats.Types.Player
 
-teamRosterEndpoint :: Endpoint TeamRosterQuery TeamRosterResponse 
+teamRosterEndpoint :: Endpoint TeamRosterQuery TeamRosterResponse
 teamRosterEndpoint = Endpoint
-  { endpoint_resourceName = "commonteamroster" 
+  { endpoint_resourceName = "commonteamroster"
   , endpoint_queryBuilder = \TeamRosterQuery{..} ->
       [ toQueryItem "TeamID" teamID
       , toQueryItem "Season" season
       ]
-  , endpoint_responseHandler = \RawResponse{..} -> case resultSets of 
+  , endpoint_responseHandler = \RawResponse{..} -> case resultSets of
       (rPlayers:rCoaches:_) -> TeamRosterResponse
         <$> fromJSON rPlayers
         <*> fromJSON rCoaches
